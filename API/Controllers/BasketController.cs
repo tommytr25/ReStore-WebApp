@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.HttpResults;
 using API.Data.DTOs;
+using Microsoft.AspNetCore.Components.Web;
 
 
 namespace API.Controllers
@@ -32,7 +33,7 @@ namespace API.Controllers
             var basket = await RetrieveBasket();
             if (basket == null) basket = CreateBasket();
             var product = await _context.Products.FindAsync(productId);
-            if (product == null) return NotFound();
+            if (product == null) return BadRequest(new ProblemDetails{Title="Product Not Found"});
             basket.AddItem(product, quantity);
             var result = await _context.SaveChangesAsync() > 0;
             if (result) return CreatedAtRoute("GetBasket", MapBasketToDto(basket));
