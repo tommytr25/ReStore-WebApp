@@ -11,12 +11,18 @@ import BasketPage from "../../features/basket/BasketPage";
 import CheckOutPage from "../../features/checkout/CheckOutPage";
 import Register from "../../features/account/Register";
 import Login from "../../features/account/Login";
+import RequireAuth from "./RequireAuth";
+import Orders from "../../features/orders/Orders";
 
 export const router = createBrowserRouter([
     {
         path: '/',
         element: <App />,
         children: [
+            {element: <RequireAuth/>, children:[
+                {path:'checkout', element: <CheckOutPage/>},
+                {path:'orders', element: <Orders/>}
+            ]},
             { path: '', element: <HomePage /> },
             { path: 'catalog', element: <Catalog /> },
             { path: 'catalog/:id', element: <ProductDetails /> },
