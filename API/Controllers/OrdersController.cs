@@ -13,19 +13,21 @@ namespace API.Controllers
     public class OrdersController : BaseApiController
     {
         private readonly StoreContext _context;
+
         public OrdersController(StoreContext context)
         {
             _context = context;
-
         }
 
         [HttpGet]
         public async Task<ActionResult<List<OrderDto>>> GetOrders()
         {
-            return await _context.Orders
-            .ProjectOrderToOrderDto()
-            .Where(x => x.BuyerId == User.Identity.Name)
-            .ToListAsync();
+            var orders = await _context.Orders
+                .ProjectOrderToOrderDto()
+                .Where(x => x.BuyerId == User.Identity.Name)
+                .ToListAsync();
+
+            return orders;
         }
 
         [HttpGet("{id}", Name = "GetOrder")]
@@ -33,21 +35,23 @@ namespace API.Controllers
         {
             return await _context.Orders
                 .ProjectOrderToOrderDto()
-                .Where(x => x.BuyerId == User.Identity.Name && x.Id == id)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(x => x.BuyerId == User.Identity.Name && x.Id == id);
         }
-
+ 
         [HttpPost]
         public async Task<ActionResult<int>> CreateOrder(CreateOrderDto orderDto)
         {
             var basket = await _context.Baskets
-            .RetrieveBasketWithItems(User.Identity.Name)
-            .FirstOrDefaultAsync();
+                .RetrieveBasketWithItems(User.Identity.Name)
+                .FirstOrDefaultAsync();
 
-            if (basket == null)
-                return BadRequest(new ProblemDetails { Title = "Could not locate basket" });
+            if (basket == null) return BadRequest(new ProblemDetails 
+            { 
+                Title = "Could not find basket" 
+            });
 
             var items = new List<OrderItem>();
+
             foreach (var item in basket.Items)
             {
                 var productItem = await _context.Products.FindAsync(item.ProductId);
@@ -57,20 +61,18 @@ namespace API.Controllers
                     Name = productItem.Name,
                     PictureUrl = productItem.PictureUrl
                 };
-
                 var orderItem = new OrderItem
                 {
                     ItemOrdered = itemOrdered,
                     Price = productItem.Price,
                     Quantity = item.Quantity
                 };
-
                 items.Add(orderItem);
                 productItem.QuantityInStock -= item.Quantity;
             }
 
             var subtotal = items.Sum(item => item.Price * item.Quantity);
-            var deliveryFee = subtotal > 1000 ? 0 : 500;
+            var deliveryFee = subtotal > 10000 ? 0 : 500;
 
             var order = new Order
             {
@@ -78,16 +80,19 @@ namespace API.Controllers
                 BuyerId = User.Identity.Name,
                 ShippingAddress = orderDto.ShippingAddress,
                 Subtotal = subtotal,
-                DeliveryFee = deliveryFee
+                DeliveryFee = deliveryFee,
+                PaymentIntentId = basket.PaymentIntentId
             };
+
             _context.Orders.Add(order);
             _context.Baskets.Remove(basket);
 
             if (orderDto.SaveAddress)
             {
                 var user = await _context.Users
-                .Include(a => a.Address)
-                .FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
+                    .Include(a => a.Address)
+                    .FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
+
                 var address = new UserAddress
                 {
                     FullName = orderDto.ShippingAddress.FullName,
@@ -96,10 +101,11 @@ namespace API.Controllers
                     City = orderDto.ShippingAddress.City,
                     State = orderDto.ShippingAddress.State,
                     Zip = orderDto.ShippingAddress.Zip,
-                    Country = orderDto.ShippingAddress.Country,
+                    Country = orderDto.ShippingAddress.Country
                 };
                 user.Address = address;
             }
+
             var result = await _context.SaveChangesAsync() > 0;
 
             if (result) return CreatedAtRoute("GetOrder", new { id = order.Id }, order.Id);

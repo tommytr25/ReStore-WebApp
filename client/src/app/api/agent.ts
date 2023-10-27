@@ -91,8 +91,12 @@ const Account = {
 
 const Orders = {
     list: () => requests.get('orders'),
-    fetch: (id:number) => requests.get(`orders/${id}`),
-    create: (values: any) => requests.post('orders',values)
+    fetch: (id: number) => requests.get(`orders/${id}`),
+    create: (values: any) => requests.post('orders', values)
+}
+
+const Payments = {
+    createPaymentIntent: () => requests.post('payments', {})
 }
 
 const agent = {
@@ -100,7 +104,8 @@ const agent = {
     TestErrors,
     Basket,
     Account,
-    Orders
+    Orders,
+    Payments
 }
 
 export default agent;
