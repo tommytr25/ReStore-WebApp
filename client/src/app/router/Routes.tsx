@@ -1,5 +1,4 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
-import HomePage from "../../features/home/HomePage";
 import Catalog from "../../features/catalog/Catalog";
 import ProductDetails from "../../features/catalog/ProductDetails";
 import AboutPage from "../../features/about/AboutPage";
@@ -20,11 +19,12 @@ export const router = createBrowserRouter([
         path: '/',
         element: <App />,
         children: [
-            {element: <RequireAuth/>, children:[
-                {path:'checkout', element: <CheckoutWrapper/>},
-                {path:'orders', element: <Orders/>}
-            ]},
-            { path: '', element: <HomePage /> },
+            {
+                element: <RequireAuth />, children: [
+                    { path: 'checkout', element: <CheckoutWrapper /> },
+                    { path: 'orders', element: <Orders /> }
+                ]
+            },
             { path: 'catalog', element: <Catalog /> },
             { path: 'catalog/:id', element: <ProductDetails /> },
             { path: 'about', element: <AboutPage /> },
@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
             { path: 'not-found', element: <NotFound /> },
             { path: 'basket', element: <BasketPage /> },
             { path: 'checkout', element: <CheckOutPage /> },
-            { path: 'login', element: <Login/> },
+            { path: 'login', element: <Login /> },
             { path: 'register', element: <Register /> },
 
             { path: '*', element: <Navigate replace to='/not-found' /> },

@@ -1,0 +1,23 @@
+# fly.toml app configuration file generated for restorewebapp on 2023-10-28T15:43:54-05:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "restorewebapp"
+primary_region = "dfw"
+
+[build]
+  image = "tommytr1225/restore:latest"
+
+[env]
+  ASPNETCORE_URLS="http://+:8080"
+  StripeSettings__PublishableKey="pk_test_51O5HAPAej1J8isWhLhpdJPbPdqTGZEvpjVCJzvYFfzjpNK5k4WdKHxqRNuz4wz6aWytnNpfZAALmNfJnwMHEErME00OQfCEbB7"
+
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
