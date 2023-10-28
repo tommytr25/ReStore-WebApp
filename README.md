@@ -17,11 +17,11 @@ I learned the importance of setting up a robust developer environment to streaml
 ### Creating a .Net WebAPI Application
 Leveraging the dotnet CLI, I successfully developed a .Net WebAPI application, which serves as the backbone of the 'Restore Web App.'
 ### Database Management with Entity Framework
-I employed Entity Framework to write efficient code for querying and updating the database, ensuring data integrity and smooth application performance.### Setting Up the Developer Environment
+I employed Entity Framework to write efficient code for querying and updating the database, ensuring data integrity and smooth application performance.
 ### Authentication and Authorization
-By incorporating ASP.NET Identity, I enabled user registration and login, prioritizing security and user management.### Front-End Development with React
+By incorporating ASP.NET Identity, I enabled user registration and login, prioritizing security and user management.
 ### Advanced Features
-I implemented essential features like paging, sorting, searching, and filtering to make the application user-friendly and efficient.### Creating a .Net WebAPI Application
+I implemented essential features like paging, sorting, searching, and filtering to make the application user-friendly and efficient.
 ### Secure Payment Processing
 The integration of the Stripe API, following CPI standards for 3D secure, allowed users to make secure payments, enhancing the app's overall utility.
 ### Dockerization and GitHub Workflow
