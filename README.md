@@ -14,8 +14,6 @@ Leveraging the dotnet CLI, I successfully developed a .Net WebAPI application, w
 I designed the client-side front-end using React, creating a dynamic single-page application that enhances the user interface and user experience.
 ### Setting Up the Developer Environment
 I learned the importance of setting up a robust developer environment to streamline the development process and ensure a smooth workflow.
-### Creating a .Net WebAPI Application
-Leveraging the dotnet CLI, I successfully developed a .Net WebAPI application, which serves as the backbone of the 'Restore Web App.'
 ### Database Management with Entity Framework
 I employed Entity Framework to write efficient code for querying and updating the database, ensuring data integrity and smooth application performance.
 ### Authentication and Authorization
