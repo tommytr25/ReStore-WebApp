@@ -5,7 +5,7 @@ E-commerce website developed with C#, ASP.NET, React, TypeScript, and Redux
 This app is developed for my educational/ learning purpose.
 
 ## What I have learned
-Throughout the development of the 'Restore Web App,' I acquired a diverse set of skills and knowledge. Here are some of the key takeaways from this educational endeavor:
+Key takeaways that I have learned throughout the process of learning and developing this application:
 ### Setting Up the Developer Environment
 I learned the importance of setting up a robust developer environment to streamline the development process and ensure a smooth workflow.
 ### Creating a .Net WebAPI Application
